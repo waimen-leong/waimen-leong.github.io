@@ -46,7 +46,7 @@
   function mediaHTML(m, title) {
     if (!m) return "";
     if (m.type === "youtube" && m.id) {
-      return `<div class="media"><iframe src="https://www.youtube-nocookie.com/embed/${esc(m.id)}"
+      return `<div class="media"><iframe src="  https://www.youtube.com/embed/${esc(m.id)}"
         title="${esc(title)} video" loading="lazy" allowfullscreen
         allow="accelerometer; encrypted-media; gyroscope; picture-in-picture"></iframe></div>`;
     }
