@@ -85,7 +85,8 @@ const PORTFOLIO = {
       ],
       tech: ["C++", "OpenGL", "Lua / Sol2", "ImGui", "PlayFab", "RapidJSON"],
       links: [
-        { label: "Source on GitHub", url: "https://github.com/Siestasies/UmapyoiEngine" }
+        { label: "Source on GitHub", url: "https://github.com/Siestasies/UmapyoiEngine" },
+        { label: "Release", url: "https://drive.google.com/file/d/1D6a6KMbOL1d4_uWAjAhwrerCR3GEBXKS/view?usp=sharing" }
       ],
       media: { type: "image", src: "assets/uma_engine/sc1.png" }
     },
