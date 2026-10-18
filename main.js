@@ -45,10 +45,11 @@
   /* ---------- 2. Projects ---------- */
   function mediaHTML(m, title) {
     if (!m) return "";
-    if (m.type === "youtube" && m.id) {
-      return `<div class="media"><iframe src="  https://www.youtube.com/embed/${esc(m.id)}"
+      if (m.type === "youtube" && m.id) {
+      return `<div class="media"><iframe src="https://www.youtube.com/embed/${esc(m.id)}"
         title="${esc(title)} video" loading="lazy" allowfullscreen
-        allow="accelerometer; encrypted-media; gyroscope; picture-in-picture"></iframe></div>`;
+        referrerpolicy="strict-origin-when-cross-origin"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"></iframe></div>`;
     }
     if (m.type === "image" && m.src) {
       return `<div class="media"><img src="${esc(m.src)}" alt="${esc(title)} screenshot" loading="lazy"></div>`;
