@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Portfolio</title>
+  <meta name="description" content="Engine programmer portfolio">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!--
+    You normally don't need to edit this file.
+    The empty containers below (id="...") get filled in by main.js
+    using the content you wrote in data.js.
+  -->
+  <a class="skip" href="#projects">Skip to projects</a>
+
+  <header class="topbar">
+    <a class="brand" id="brand" href="#top"></a>
+    <nav>
+      <a href="#projects">Projects</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="hero-text">
+        <p class="hero-role" id="hero-role"></p>
+        <h1 id="hero-name"></h1>
+        <p class="hero-tagline" id="hero-tagline"></p>
+        <p class="hero-status" id="hero-status"></p>
+        <div class="hero-links" id="hero-links"></div>
+      </div>
+      <figure class="viewport" aria-hidden="true">
+        <canvas id="viewport-canvas"></canvas>
+        <figcaption class="viewport-hud">
+          <span><i class="ax x"></i>engine</span>
+          <span><i class="ax y"></i>gameplay</span>
+          <span><i class="ax z"></i>graphics</span>
+        </figcaption>
+      </figure>
+    </section>
+
+    <section id="projects" class="section">
+      <h2>Projects</h2>
+      <div class="filters" id="filters" role="group" aria-label="Filter projects"></div>
+      <div class="project-list" id="project-list"></div>
+    </section>
+
+    <section id="about" class="section about">
+      <h2>About</h2>
+      <div class="about-grid">
+        <div class="about-text" id="about-text"></div>
+        <dl class="skills" id="skills"></dl>
+      </div>
+      <h3>Education &amp; experience</h3>
+      <ol class="timeline" id="timeline"></ol>
+    </section>
+
+    <section id="contact" class="section contact">
+      <h2>Contact</h2>
+      <p>Open to internship opportunities. The quickest way to reach me is email.</p>
+      <div class="hero-links" id="contact-links"></div>
+    </section>
+  </main>
+
+  <footer class="footer" id="footer"></footer>
+
+  <!-- Order matters: data.js must load before main.js -->
+  <script src="data.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>
