@@ -19,7 +19,7 @@
 
   const $ = (id) => document.getElementById(id);
 
-  const CATEGORY_LABEL = { engine: "Engine", gameplay: "Gameplay", graphics: "Graphics" };
+  const CATEGORY_LABEL = { engine: "Engine", gameplay: "Gameplay", graphics: "Graphics", software: "Software" };
 
   /* ---------- 1. Top section ---------- */
   document.title = `${P.name} | ${P.role}`;
@@ -89,7 +89,7 @@
   const filterKeys = ["all", ...used];
   $("filters").innerHTML = filterKeys
     .map((k) => {
-      const dot = k === "all" ? "" : `<i class="ax ${{ engine: "x", gameplay: "y", graphics: "z" }[k]}"></i>`;
+      const dot = k === "all" ? "" : `<i class="ax ${{ engine: "x", gameplay: "y", graphics: "z", software: "w" }[k]}"></i>`;
       return `<button type="button" data-filter="${k}" aria-pressed="${k === "all"}">${dot}${k === "all" ? "All" : CATEGORY_LABEL[k]}</button>`;
     })
     .join("");

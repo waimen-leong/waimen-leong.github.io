@@ -43,7 +43,7 @@ const PORTFOLIO = {
   ],
 
   /* ---------- Projects ----------
-     category: "engine" | "graphics" | "gameplay"
+     category: "engine" | "graphics" | "gameplay" | "software"
        (controls the coloured marker; colours match X/Y/Z gizmo axes)
      media:
        { type: "youtube", id: "VIDEO_ID" }   ← the part after watch?v=
@@ -51,6 +51,24 @@ const PORTFOLIO = {
        null                                   ← no media
   */
   projects: [
+    
+    {
+      title: "AnytimeReno",
+      category: "software",
+      role: "Tech Lead & Engine Champion, team of 7",
+      period: "GAM300 (ongoing)",
+      summary:
+        "(WIP) Accessible interior planning for homeowners and residents",
+      highlights: [
+        "Vertex drawing to layout rooms",
+        "WebGL deployment to server",
+        "Github automated build and deploy (CI/CD)",
+        "MySQL database"
+      ],
+      tech: ["C#", "json", "MySQL", "Docker", "Nginx", "Unity"],
+      links: [{ label: "Website", url: "https://team35.dp-ext8.com/" }],
+      media: { type: "image", src: "assets/anytimereno/sc1.png" }
+    },
     {
       title: "Umapyoi Engine",
       category: "engine",
@@ -128,10 +146,10 @@ const PORTFOLIO = {
 
   /* ---------- Skills (group name : list) ---------- */
   skills: [
-    { group: "Languages", items: ["C++", "C#", "Lua", "GLSL", "JavaScript"] },
+    { group: "Languages", items: ["C++", "C#", "C", "Lua", "GLSL", "MySQL"] },
     { group: "Engine", items: ["ECS architecture", "Scripting bindings", "Serialization", "Editor tooling", "Collision & physics"] },
     { group: "Graphics", items: ["OpenGL", "Shaders", "Culling", "Instancing", "BVH / spatial hashing"] },
-    { group: "Tools & libs", items: ["ImGui", "Sol2", "FMOD", "PlayFab", "GLFW", "Git"] }
+    { group: "Tools & libs", items: ["ImGui", "Sol2", "FMOD", "PlayFab", "GLFW", "Git", "Docker", "Nginx"] }
   ],
 
   /* ---------- Education / experience timeline (newest first) ---------- */
@@ -139,17 +157,17 @@ const PORTFOLIO = {
     {
       title: "BSc Computer Science in Real-Time Interactive Simulation",
       place: "DigiPen Institute of Technology Singapore",
-      period: "Expected Sept 2028"
+      period: "Aug 2024 - Sept 2028"
     },
     {
       title: "Game Developer",
       place: "Metascape City",
-      period: ""
+      period: "May 2022 - Aug 2022"
     },
     {
       title: "Diploma in Game Development and Technology",
       place: "Nanyang Polytechnic",
-      period: "2022"
+      period: "April 2019 - Mar 2022"
     }
   ]
 };
