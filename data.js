@@ -106,7 +106,7 @@ const PORTFOLIO = {
       links: [
         { label: "Game", url: "https://drive.google.com/file/d/1NZi_sDUouOG3Rsj3D1OXAVRvwAyOr0JO/view?usp=sharing" }
       ],
-      media: { type: "youtube", id: "urY-4UcQbU" }
+      media: { type: "youtube", id: "Nwifpq_tkoA" }
     },
     {
       title: "Multi-pass Rendering Pipeline",
