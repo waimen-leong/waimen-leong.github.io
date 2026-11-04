@@ -60,12 +60,14 @@ const PORTFOLIO = {
       summary:
         "(WIP) Accessible interior planning for homeowners and residents",
       highlights: [
-        "Vertex drawing to layout rooms",
-        "WebGL deployment to server",
-        "Github automated build and deploy (CI/CD)",
-        "MySQL database"
+        "Data-driven 2D floor plan editor: edits mutate plan data, dirty-flag rebuild over pooled LineRenderers",
+        "Runtime glTF (.glb) streaming into Unity WebGL via glTFast",
+        "Auth: Argon2 password hashing, hashed session tokens, nginx per-route rate limiting, CAPTCHA overlay on WebGL canvas",
+        "Node.js API + MariaDB in Docker Compose behind nginx/HTTPS, with SQL migrations and automated backups",
+        "Per-user project & model storage with UUID-keyed assets and thumbnails, owner-scoped uploads",
+        "CI/CD: GitHub Actions self-hosted runner builds WebGL; API shipped as container image to the VM"
       ],
-      tech: ["C#", "json", "MySQL", "Docker", "Nginx", "Unity"],
+      tech: ["C#", "Unity", "Node.js", "MariaDB", "Docker", "Nginx", "GitHub Actions", "glTF"],
       links: [{ label: "Website", url: "https://team35.dp-ext8.com/" }],
       media: { type: "image", src: "assets/anytimereno/sc1.png" }
     },
