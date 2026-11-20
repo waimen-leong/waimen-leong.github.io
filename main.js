@@ -62,6 +62,7 @@
     ["failed", "What failed"], ["changed", "What I changed"], ["result", "What happened"]
   ];
   function caseStudyHTML(c) {
+    if (Array.isArray(c)) return c.map(caseStudyHTML).join("");
     if (!c) return "";
     const rows = CASE_ROWS.filter(([k]) => c[k])
       .map(([k, label]) => `<div><dt>${label}</dt><dd>${esc(c[k])}</dd></div>`).join("");

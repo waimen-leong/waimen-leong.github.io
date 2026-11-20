@@ -73,21 +73,39 @@ const PORTFOLIO = {
       media: { type: "image", src: "assets/anytimereno/sc1.png" },
       // Case study fields: tag, problem, constraint, tested, failed, changed, result.
       // Leave any field "" to hide that row. Delete the whole caseStudy block to hide it.
-      caseStudy: {
-        tag: "Constrained",
-        problem:
-          "Two risks before launch: bots could flood the register page and create masses of fake accounts, and we didn't know how many people the server could actually handle at once. First backend I've built where security and capacity were real requirements.",
-        constraint:
-          "One school VM: 2 CPU cores, 3.7 GB RAM, a single Node.js process. The client is Unity WebGL, so nothing in the browser can be trusted, and a normal CAPTCHA widget can't sit on a WebGL canvas. Argon2 password hashing is deliberately CPU-heavy, which competes with everything else on those 2 cores.",
-        tested:
-          "Load-tested the live server with k6: fixed numbers of virtual users (100 to 800) hitting the model catalogue and the login endpoint, with docker stats open to watch per-container CPU and memory. Ran login and catalogue floods at the same time to see if one starved the other.",
-        failed:
-          "At 400 users the catalogue's p95 latency hit 5.7 s with timeouts, at ~5.5 ms of CPU per request (a ceiling of ~180 req/s). A login flood let Argon2 take both cores, slowing every other endpoint. The test setup also broke on its own: nginx rate limits kept returning 429s until the limit zones were re-keyed and the container restarted.",
-        changed:
-          "Bots: Cloudflare Turnstile on the register page (as an HTML overlay on the WebGL canvas), nginx per-IP rate limits (register 3/min, login 10/min), Argon2 hashing and hashed session tokens. Capacity: cached the public model catalogue in memory, enabled nginx-to-Node keepalive, capped Argon2 to 1 hash at a time behind a 100-slot queue (503 + Retry-After past that), and gave each container a memory limit so one crash can't take the stack down.",
-        result:
-          "CPU per request dropped about 4x (5.5 ms to 1.3 ms). The catalogue now serves ~724 req/s at 800 users with 0% errors, and p95 at 400 users fell from 5.7 s to 39 ms. During a 100-user login flood the catalogue held 29 ms p95, unaffected. Estimated capacity is ~1,200 to 1,700 concurrent users, limited by bandwidth for the WebGL download, not the API."
-      }
+      // caseStudy can also be a list [ {...}, {...} ] to show several parts.
+      caseStudy: [
+        {
+          tag: "Constrained: security",
+          problem:
+            "Bots could hit the register page and create masses of fake accounts, and every account holds private floor plans and uploaded models. First backend I've built where security was a real requirement.",
+          constraint:
+            "The client is Unity WebGL, so everything in the browser is public and nothing it sends can be trusted. A normal CAPTCHA widget can't render inside a WebGL canvas.",
+          tested: // VERIFY: how did you check it worked?
+            "",
+          failed: // VERIFY: anything that didn't work first time? (e.g. the CAPTCHA inside the canvas)
+            "",
+          changed:
+            "Cloudflare Turnstile on the register page, rendered as an HTML overlay on top of the WebGL canvas. nginx per-IP rate limits per route (register 3/min, login 10/min, API 10/s). Passwords hashed with Argon2, and session tokens stored hashed so a database leak doesn't hand out live sessions. Assets keyed by UUID and every upload checked against its owner.",
+          result:
+            "Mass sign-ups are blocked by the CAPTCHA and capped at 3 per minute per IP. Argon2 made stored passwords expensive to crack, but it also made every login CPU-heavy, which became the capacity problem below."
+        },
+        {
+          tag: "Constrained: capacity",
+          problem:
+            "We didn't know how many people the server could handle at once, or what would break first.",
+          constraint:
+            "One school VM: 2 CPU cores, 3.7 GB RAM, a single Node.js process. Argon2 hashing is deliberately CPU-heavy and competes with every other request on those 2 cores.",
+          tested:
+            "Load-tested the live server with k6: fixed numbers of virtual users (100 to 800) hitting the model catalogue and the login endpoint, with docker stats open to watch per-container CPU and memory. Ran login and catalogue floods at the same time to see if one starved the other.",
+          failed:
+            "At 400 users the catalogue's p95 latency hit 5.7 s with timeouts, at ~5.5 ms of CPU per request (a ceiling of ~180 req/s). A login flood let Argon2 take both cores, slowing every other endpoint. The test itself also got blocked by our own rate limits until the nginx limit zones were re-keyed and the container restarted.",
+          changed:
+            "Cached the public model catalogue in memory, enabled nginx-to-Node keepalive, capped Argon2 to 1 hash at a time behind a 100-slot queue (503 + Retry-After past that), and gave each container a memory limit so one crash can't take the stack down.",
+          result:
+            "CPU per request dropped about 4x (5.5 ms to 1.3 ms). The catalogue now serves ~724 req/s at 800 users with 0% errors, and p95 at 400 users fell from 5.7 s to 39 ms. During a 100-user login flood the catalogue held 29 ms p95, unaffected. Estimated capacity is ~1,200 to 1,700 concurrent users, limited by bandwidth for the WebGL download, not the API."
+        }
+      ]
     },
     {
       title: "Umapyoi Engine",
