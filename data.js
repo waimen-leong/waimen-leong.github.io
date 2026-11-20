@@ -87,7 +87,7 @@ const PORTFOLIO = {
       ],
       tech: ["C++", "OpenGL", "Lua / Sol2", "ImGui", "PlayFab", "RapidJSON"],
       links: [
-        { label: "Source on GitHub", url: "https://github.com/Siestasies/UmapyoiEngine" },
+        { label: "Source on GitHub", url: "https://github.com/waimen-leong/GAM200-250_UmapyoiEngine" },
         { label: "Release", url: "https://drive.google.com/file/d/1D6a6KMbOL1d4_uWAjAhwrerCR3GEBXKS/view?usp=sharing" }
       ],
       media: { type: "image", src: "assets/uma_engine/sc1.png" }
@@ -107,6 +107,7 @@ const PORTFOLIO = {
       ],
       tech: ["C++", "Lua", "playfab", "json"],
       links: [
+        { label: "Source on GitHub", url: "https://github.com/waimen-leong/GAM200-250_UmapyoiEngine" },
         { label: "Game", url: "https://drive.google.com/file/d/11YZPx1PwK7LOcOR-0EFIoA0tadWIr67W/view?usp=sharing" }
       ],
       media: { type: "image", src: "assets/senki/sc2.png" }
@@ -125,6 +126,8 @@ const PORTFOLIO = {
       ],
       tech: ["C++"],
       links: [
+        
+        { label: "Source on GitHub", url: "https://github.com/waimen-leong/GAM100_DROOM" },
         { label: "Game", url: "https://drive.google.com/file/d/1NZi_sDUouOG3Rsj3D1OXAVRvwAyOr0JO/view?usp=sharing" }
       ],
       media: { type: "youtube", id: "Nwifpq_tkoA" }
