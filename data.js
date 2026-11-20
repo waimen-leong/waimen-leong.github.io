@@ -62,14 +62,32 @@ const PORTFOLIO = {
       highlights: [
         "Data-driven 2D floor plan editor: edits mutate plan data, dirty-flag rebuild over pooled LineRenderers",
         "Runtime glTF (.glb) streaming into Unity WebGL via glTFast",
-        "Auth: Argon2 password hashing, hashed session tokens, nginx per-route rate limiting, CAPTCHA overlay on WebGL canvas",
+        "Auth: Argon2 password hashing, hashed session tokens, nginx per-route rate limiting, Turnstile CAPTCHA overlay on WebGL canvas",
+        "Load-tested with k6: 4x less CPU per request, ~724 req/s at 800 concurrent users with 0% errors",
         "Node.js API + MariaDB in Docker Compose behind nginx/HTTPS, with SQL migrations and automated backups",
         "Per-user project & model storage with UUID-keyed assets and thumbnails, owner-scoped uploads",
         "CI/CD: GitHub Actions self-hosted runner builds WebGL; API shipped as container image to the VM"
       ],
       tech: ["C#", "Unity", "Node.js", "MariaDB", "Docker", "Nginx", "GitHub Actions", "glTF"],
       links: [{ label: "Website", url: "https://team35.dp-ext8.com/" }],
-      media: { type: "image", src: "assets/anytimereno/sc1.png" }
+      media: { type: "image", src: "assets/anytimereno/sc1.png" },
+      // Case study fields: tag, problem, constraint, tested, failed, changed, result.
+      // Leave any field "" to hide that row. Delete the whole caseStudy block to hide it.
+      caseStudy: {
+        tag: "Constrained",
+        problem:
+          "Two risks before launch: bots could flood the register page and create masses of fake accounts, and we didn't know how many people the server could actually handle at once. First backend I've built where security and capacity were real requirements.",
+        constraint:
+          "One school VM: 2 CPU cores, 3.7 GB RAM, a single Node.js process. The client is Unity WebGL, so nothing in the browser can be trusted, and a normal CAPTCHA widget can't sit on a WebGL canvas. Argon2 password hashing is deliberately CPU-heavy, which competes with everything else on those 2 cores.",
+        tested:
+          "Load-tested the live server with k6: fixed numbers of virtual users (100 to 800) hitting the model catalogue and the login endpoint, with docker stats open to watch per-container CPU and memory. Ran login and catalogue floods at the same time to see if one starved the other.",
+        failed:
+          "At 400 users the catalogue's p95 latency hit 5.7 s with timeouts, at ~5.5 ms of CPU per request (a ceiling of ~180 req/s). A login flood let Argon2 take both cores, slowing every other endpoint. The test setup also broke on its own: nginx rate limits kept returning 429s until the limit zones were re-keyed and the container restarted.",
+        changed:
+          "Bots: Cloudflare Turnstile on the register page (as an HTML overlay on the WebGL canvas), nginx per-IP rate limits (register 3/min, login 10/min), Argon2 hashing and hashed session tokens. Capacity: cached the public model catalogue in memory, enabled nginx-to-Node keepalive, capped Argon2 to 1 hash at a time behind a 100-slot queue (503 + Retry-After past that), and gave each container a memory limit so one crash can't take the stack down.",
+        result:
+          "CPU per request dropped about 4x (5.5 ms to 1.3 ms). The catalogue now serves ~724 req/s at 800 users with 0% errors, and p95 at 400 users fell from 5.7 s to 39 ms. During a 100-user login flood the catalogue held 29 ms p95, unaffected. Estimated capacity is ~1,200 to 1,700 concurrent users, limited by bandwidth for the WebGL download, not the API."
+      }
     },
     {
       title: "Umapyoi Engine",
@@ -90,7 +108,22 @@ const PORTFOLIO = {
         { label: "Source on GitHub", url: "https://github.com/waimen-leong/GAM200-250_UmapyoiEngine" },
         { label: "Release", url: "https://drive.google.com/file/d/1D6a6KMbOL1d4_uWAjAhwrerCR3GEBXKS/view?usp=sharing" }
       ],
-      media: { type: "image", src: "assets/uma_engine/sc1.png" }
+      media: { type: "image", src: "assets/uma_engine/sc1.png" },
+      caseStudy: {
+        tag: "Flagship",
+        problem:
+          "Senki needed designers to build levels out of reusable pieces: an enemy prefab, a room prefab full of enemies, then many rooms in a scene, each tweaked slightly. That meant an ECS that could support nested prefabs and prefab instances inside scenes.",
+        constraint:
+          "First time building an ECS or a prefab system. Written from scratch in C++ over two semesters while the team was building Senki on top of it, so any engine change could break the game in progress.",
+        tested: 
+          "Built single-layer prefabs first, then nested them (prefabs inside prefabs) and placed instances in scenes, saving and reloading to check every value came back as set.",
+        failed:
+          "Single-layer prefabs worked fine. Once prefabs were nested more than one layer deep, their data started overwriting each other, and with several layers applying values to the same entity it was very hard to trace which layer was doing the overwriting.",
+        changed: 
+          "Split loading into two passes: create every entity first, then resolve hierarchy and apply overrides in a fixed order, from the innermost prefab out to the scene. Instances store a link to their prefab plus only the properties that differ, so each value has one clear owner.",
+        result: 
+          "Senki shipped on the engine, with levels assembled from nested prefabs by the whole team, not just programmers."
+      }
     },
     {
       title: "Senki",
@@ -130,7 +163,22 @@ const PORTFOLIO = {
         { label: "Source on GitHub", url: "https://github.com/waimen-leong/GAM100_DROOM" },
         { label: "Game", url: "https://drive.google.com/file/d/1NZi_sDUouOG3Rsj3D1OXAVRvwAyOr0JO/view?usp=sharing" }
       ],
-      media: { type: "youtube", id: "Nwifpq_tkoA" }
+      media: { type: "youtube", id: "Nwifpq_tkoA" },
+      caseStudy: {
+        tag: "Skill: A* pathfinding",
+        problem:
+          "Enemies in a raycast 2.5D world have to chase the player through corridors, not walk straight into walls.",
+        constraint:
+          "First-year project in plain C++, no engine. Pathfinding had to run on the same 2D grid the raycaster draws from, every frame, for every enemy in a wave.",
+        tested: 
+          "Grid A* with a Manhattan heuristic, checked with growing waves of enemies to see how it held up as the enemy count scaled.",
+        failed: 
+          "Recomputing every enemy's path every frame was wasteful, and enemies following identical paths bunched into one tile.",
+        changed: 
+          "Paths are recalculated only when the player moves to a new grid cell, and enemies spawn from different points so they approach from different directions.",
+        result:
+          "Enemies reliably navigate the map in every wave. The most fun project we've made: small scope, no stress, and room to play with the design."
+      }
     },
     {
       title: "Multi-pass Rendering Pipeline",

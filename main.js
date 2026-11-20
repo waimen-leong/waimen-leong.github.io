@@ -57,6 +57,21 @@
     return "";
   }
 
+  const CASE_ROWS = [
+    ["problem", "Problem"], ["constraint", "Constraint"], ["tested", "What I tested"],
+    ["failed", "What failed"], ["changed", "What I changed"], ["result", "What happened"]
+  ];
+  function caseStudyHTML(c) {
+    if (!c) return "";
+    const rows = CASE_ROWS.filter(([k]) => c[k])
+      .map(([k, label]) => `<div><dt>${label}</dt><dd>${esc(c[k])}</dd></div>`).join("");
+    if (!rows) return "";
+    return `<details class="case">
+        <summary>Case study${c.tag ? ` <span class="case-tag">${esc(c.tag)}</span>` : ""}</summary>
+        <dl>${rows}</dl>
+      </details>`;
+  }
+
   function projectHTML(p) {
     const cat = CATEGORY_LABEL[p.category] ? p.category : "engine";
     const highlights = (p.highlights || []).map((h) => `<li>${esc(h)}</li>`).join("");
@@ -77,6 +92,7 @@
           ${mediaHTML(p.media, p.title)}
           <p class="summary">${esc(p.summary)}</p>
           ${highlights ? `<ul>${highlights}</ul>` : ""}
+          ${caseStudyHTML(p.caseStudy)}
           ${tech ? `<ul class="tech" aria-label="Tech used">${tech}</ul>` : ""}
           ${links ? `<div class="project-links">${links}</div>` : ""}
         </div>
